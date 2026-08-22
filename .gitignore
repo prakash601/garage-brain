@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Environment / secrets
+.env
+.env.*
+*.env
+
+# Flutter / Dart (future)
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+.packages
+build/
+*.g.dart.tmp
+
+# Node (tooling)
+node_modules/
+
+# CodeGraph index
+.codegraph/
