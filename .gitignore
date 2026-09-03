@@ -21,6 +21,8 @@ build/
 
 # Node (tooling)
 node_modules/
+docs-site/.vitepress/cache/
+docs-site/.vitepress/dist/
 
 # CodeGraph index
 .codegraph/

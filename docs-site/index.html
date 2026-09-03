@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Garage Brain — Workshop OS Docs</title>
+  <meta name="description" content="Offline-first Workshop OS docs — SRS, HLD, LLD, Diagrams, Feature Matrix" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+  <style>
+    :root { --theme-color: #2e7d32; }
+    .app-name-link img { height: 28px; vertical-align: middle; margin-right: 8px; }
+    .markdown-section { max-width: 980px; }
+    .mermaid { background: transparent; }
+    #_docsify_banner {
+      background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 8px;
+      padding: 10px 14px; margin: 14px 0; font-size: 13px; color: #5d4037;
+    }
+    #_docsify_banner a { color: #2e7d32; text-decoration: underline; }
+    .small { color: #888; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div id="app">Loading docs — if this persists, serve from repo root (see banner)…</div>
+
+  <script>
+    // Helpful banner when docs-site is served without access to ../docs
+    window.$docsify = {
+      name: 'Garage Brain — Workshop OS',
+      repo: '',
+      loadSidebar: false,
+      loadNavbar: false,
+      auto2top: true,
+      maxLevel: 3,
+      subMaxLevel: 3,
+      search: { placeholder: 'Search docs', noData: 'No results', depth: 3 },
+      alias: {
+        // Docsify tries to fetch relative to docs-site/; rewrite to repo-root docs/.
+        // This works when serving from repo root (python3 -m http.server from garage-brain/).
+        // Fallback: when served from docs-site/, fetch will 404 and banner explains.
+        '/.*/_sidebar.md': '/docs/_sidebar.md',
+        '/.*/_navbar.md': '/docs/_navbar.md',
+      },
+      homepage: '../docs/README.md',
+      // Fallback homepage when running from docs-site/ isolation:
+      fallbackLanguages: ['!'],
+      plugins: [
+        function (hook, vm) {
+          hook.beforeEach(function (content) {
+            // Prepend a notice that links back to the source if fetch used the alias
+            return content;
+          });
+          hook.doneEach(function () {
+            if (window.mermaid) {
+              document.querySelectorAll('pre.mermaid').forEach(function (el) {
+                try { window.mermaid.run({ nodes: [el] }); } catch(e) {}
+              });
+            }
+            // Detect 404 fetch (Docsify renders its 404 page) and inject hint
+            const main = document.querySelector('.markdown-section');
+            if (main && main.textContent.includes('404') && main.textContent.includes('../docs')) {
+              if (!document.getElementById('_docsify_banner')) {
+                const banner = document.createElement('div');
+                banner.id = '_docsify_banner';
+                banner.innerHTML = '<strong>Hint:</strong> you are serving <code>docs-site/</code> as root — the docs live in <code>../docs/</code> one level up, which a strict file server does not expose. <br/>Fix: <code>cd garage-brain &amp;&amp; python3 -m http.server 3000</code> then open <a href=\"http://localhost:3000/docs-site/\">http://localhost:3000/docs-site/</a> — or run <code>npm run docs:dev</code> for VitePress. <span class=\"small\">(Docsify needs the parent directory; VitePress reads srcDir=../docs directly.)</span>';
+                main.prepend(banner);
+              }
+            }
+          });
+        }
+      ],
+      // Sidebar: keep it explicit here so Docsify doesn't require _sidebar.md
+      // VitePress uses .vitepress/config.js sidebar; this mirrors it for Docsify.
+    };
+  </script>
+
+  <!-- Sidebar content injected via JS so no _sidebar.md file is required -->
+  <script>
+    // Virtual sidebar — Docsify plugin that renders a sidebar without a _sidebar.md file
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
+      hook.mounted(function () {
+        const sidebarHtml =
+          '<ul>' +
+          '<li><a href=\"#/../docs/README.md\">Overview</a>' +
+          '  <ul>' +
+          '    <li><a href=\"#/../docs/SRS.md\">SRS — Requirements</a></li>' +
+          '    <li><a href=\"#/../docs/HLD.md\">HLD — High Level</a></li>' +
+          '    <li><a href=\"#/../docs/LLD.md\">LLD — Low Level</a></li>' +
+          '    <li><a href=\"#/../docs/TECH_STACK.md\">Tech Stack</a></li>' +
+          '  </ul></li>' +
+          '<li>Structure' +
+          '  <ul>' +
+          '    <li><a href=\"#/../docs/PROJECT_STRUCTURE.md\">Project Structure</a></li>' +
+          '    <li><a href=\"#/../docs/DIAGRAMS.md\">Diagrams</a></li>' +
+          '    <li><a href=\"#/../docs/DECISIONS.md\">Locked Decisions</a></li>' +
+          '    <li><a href=\"#/../docs/FEATURE_MATRIX.md\">Feature Matrix</a></li>' +
+          '    <li><a href=\"#/../docs/DOCS_UI_PLAN.md\">Docs UI Plan</a></li>' +
+          '  </ul></li>' +
+          '<li>Source' +
+          '  <ul>' +
+          '    <li><a href=\"#/../DESIGN.md\">DESIGN.md (product truth)</a></li>' +
+          '    <li><a href=\"#/../AGENTS.md\">AGENTS.md (task board)</a></li>' +
+          '    <li><a href=\"#/../app/README.md\">app/README.md</a></li>' +
+          '  </ul></li>' +
+          '<li class=\"small\" style=\"margin-top:12px\">Other UIs: VitePress <code>npm run docs:dev</code> · Docusaurus/MkDocs/Astro — see <a href=\"#/../docs/DOCS_UI_PLAN.md\">DOCS_UI_PLAN</a></li>' +
+          '</ul>';
+        // Docsify renders sidebar from .sidebar element if present
+        const sidebar = document.querySelector('.sidebar-nav');
+        if (sidebar && !sidebar.dataset.injected) {
+          sidebar.innerHTML = sidebarHtml;
+          sidebar.dataset.injected = '1';
+        }
+      });
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+  </script>
+  <!-- Mermaid helper for Docsify: code fences ```mermaid become <pre class=mermaid> -->
+  <script>
+    (function () {
+      const orig = window.$docsify && window.$docsify.markdown;
+      // Patch after Docsify loads: convert mermaid fences
+      document.addEventListener('DOMContentLoaded', function () {
+        // Docsify already handles homepage via fetch; we only add mermaid transform
+      });
+    })();
+  </script>
+</body>
+</html>

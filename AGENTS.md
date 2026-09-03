@@ -81,6 +81,20 @@ gates until noted otherwise.
   `db: add old_bills table`). Small commits per task.
 - Secrets: only the Supabase **anon key** may ship in client code via
   `--dart-define`. Never commit service keys or `.env`.
+- Documentation sync (mandatory): whenever you create, rename, move, or delete
+  any file or directory — anywhere in the repo (including `app/lib/**`,
+  `supabase/**`, `tool/**`, `docs/**`, `docs-site/**`) — you **must** in the
+  same PR/commit update:
+  1. `docs/PROJECT_STRUCTURE.md` — the authoritative directory tree,
+  2. `docs/README.md` — the docs index / cross-links if the change affects docs,
+  3. `README.md` (root) and `app/README.md` — directory listings / cross-links,
+  4. `docs-site` nav/sidebar if the new page should appear in the browsable docs,
+  5. `docs/FEATURE_MATRIX.md` if the change adds or retires a user-facing feature.
+  Keep `DESIGN.md` and `AGENTS.md` consistent if a locked decision changes.
+  Agents: treat a missing README/structure update as a failed verification gate
+  (like `flutter analyze`). Suggested pre-commit check:
+  `git diff --name-only --diff-filter=ACR | grep -v PROJECT_STRUCTURE | grep -v README` —
+  if non-empty, ensure the docs files above are also in `git diff --name-only`.
 
 ### Testing expectations
 
@@ -224,22 +238,22 @@ Verify: fresh-machine walkthrough succeeds.
 
 | Task | Depends on | Status |
 |---|---|---|
-| T1 migrations | — | pending |
-| T2 RLS | T1 | pending |
-| T3 scaffold | — | pending |
-| T4 core utils | — | pending |
-| T5 drift schema | T3 | pending |
-| T6 repositories | T4, T5 | pending |
-| T7 sync worker | T6 | pending |
-| T8 auth | T3 | pending |
-| T9 search | T6, T8 | pending |
-| T10 create job | T6, T8, T9 | pending |
-| T11 dashboard | T6, T8 | pending |
-| T12 job detail | T6 | pending |
-| T13 old bills | T6, T8 | pending |
-| T14 backups | T7 | pending |
-| T15 seed data | T5 | pending |
-| T16 docs | T1–T3 | pending |
+| T1 migrations | — | done |
+| T2 RLS | T1 | done |
+| T3 scaffold | — | done |
+| T4 core utils | — | done |
+| T5 drift schema | T3 | done |
+| T6 repositories | T4, T5 | done |
+| T7 sync worker | T6 | done |
+| T8 auth | T3 | done |
+| T9 search | T6, T8 | done |
+| T10 create job | T6, T8, T9 | done |
+| T11 dashboard | T6, T8 | done |
+| T12 job detail | T6 | done |
+| T13 old bills | T6, T8 | done |
+| T14 backups | T7 | done |
+| T15 seed data | T5 | done |
+| T16 docs | T1–T3 | done |
 
 Parallelizable now: **T1, T3, T4** (zero overlap). After those: T5+T8 together,
 then T6, then T7/T9/T11/T13 branch out.
