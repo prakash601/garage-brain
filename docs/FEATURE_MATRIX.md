@@ -1,6 +1,6 @@
 # Feature Matrix — Shipped vs Pending — Garage Brain
 
-**Version:** 1.1.0 · **Date:** 2026-09-03  
+**Version:** 1.2.0 · **Date:** 2026-09-06  
 **Single source of truth** for "what exists / what is next". Mirrors `DESIGN.md §3`, `AGENTS.md T1–T16`.
 
 ---
@@ -17,7 +17,7 @@ Every row below has code + tests + docs. Quick probe file is listed so reviewers
 | **Core utils** T4 — phone/plate normalizers + validators + `JOB-%06d` | `app/lib/core/utils/phone.dart:4`, `plate.dart:6`, `job_number.dart` | `test/core/utils/*` | BH-series amber, `+91` strip covered |
 | **Drift mirror** T5 — 6 tables + `SyncColumns` (`synced`/`syncedAt`) + Wasm | `app/lib/data/drift/tables.dart:1`, `enums.dart`, `app_database.dart:34` | `test/data/drift/app_database_test.dart` | `.g.dart` is codegen |
 | **Repositories** T6 — Customer (phone identity), Vehicle, Job (guarded transitions+close), OldBills (bill_no uniq), Ownership (close/open) | `app/lib/data/repositories/*` | `test/repositories/*` | All write `synced=false` |
-| **Sync worker** T7 — pull-then-push, FK-safe order, cursors, LWW, 30s+connectivity | `app/lib/data/supabase/sync_worker.dart:18` + `remote_gateway.dart` | `test/data/supabase/sync_worker_test.dart` | Fake gateway in test |
+| **Sync worker** T7 — pull-then-push, FK-safe order, cursors, LWW, 30s+connectivity | `app/lib/data/supabase/sync_worker.dart:18` + `remote_gateway.dart` | `test/data/supabase/sync_worker_test.dart` + `sync_e2e_test.dart` (two-device offline→online→Web proof) | Fake gateway in test; shared `fake_remote_gateway.dart` |
 | **Auth UI** T8 / S1 — login screen + role redirect + session | `app/lib/features/auth/*`, `app/lib/routing/app_router.dart:27` | `test/features/auth/*`, `test/routing/app_router_test.dart` | No signup |
 | **Search** T9 / S3 — unified plate+phone, green/amber/red flag, timeline + CTA | `app/lib/features/search/*` | `test/features/search/*` | Reads Drift only, debounced |
 | **Create Job** T10 / S4 — vehicle(type/make/model/fuel) + customer(phone identity) + complaints/KM → instant Drift + snackbar | `app/lib/features/create_job/*` + `assets/makes.csv` | `test/features/create_job/*` | Offline queue proven |
@@ -86,7 +86,7 @@ Optional hardening that could be done before Phase 2 without breaking locked dec
 | Analytics-light dashboard (e.g., 7-day sparkline of jobs by status) | Small–Med | No Phase 2 analytics scope, just counts over time |
 | Search history / recent plates chips | Small | Speeds receptionist (<3s → even faster) |
 | Offline banner in every screen (not only Dashboard) | Small | Reinforces offline badge system-wide |
-| E2E test: Android offline create → online sync → Web sees job | Medium | Proves the sync contract end-to-end |
+| E2E sync proof (automated) | Done — `test/data/supabase/sync_e2e_test.dart`: offline create → online sync → second device sees job → owner edit returns | Proves the sync contract on every `flutter test` run |
 
 None of these are required for MVP gate; list exists so product can prioritize explicitly.
 
@@ -113,3 +113,4 @@ grep -R "amount\|price\|total\|gst\|inventory" app/lib                 # expect 
 
 - **2026-08-22 (1.0.0):** Initial publish. All T1–T16 marked shipped based on working-tree code that is present but not yet committed (`git status` shows `?? app/ supabase/`). Pending is Phase 2 per `DESIGN.md`. This is the authoritative "what exists" until `AGENTS.md Status Board` is flipped to ticked and committed.
 - **2026-09-06 (1.1.1):** Doc-sync: dropped aspirational `supabase/config.toml` references (file never existed — link Supabase via Dashboard/SQL Editor per `app/README.md`), indexed `docs/agents/` skill docs, committed `AGENTS.md` skill block.
+- **2026-09-06 (1.2.0):** E2E sync proof (`sync_e2e_test.dart` + shared `fake_remote_gateway.dart`); fixed `_dt('')` crash on nullable dates (`end_date`, `scheduled_for`) found by the new test.

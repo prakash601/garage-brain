@@ -8,8 +8,11 @@ import '../drift/enums.dart';
 import 'remote_gateway.dart';
 import 'sync_mappers.dart';
 
-DateTime? _dt(Object? s) =>
-    s == null ? null : DateTime.parse(s as String).toLocal();
+DateTime? _dt(Object? s) {
+  if (s == null) return null;
+  if (s is String && s.isEmpty) return null; // _iso() writes '' for null
+  return DateTime.parse(s as String).toLocal();
+}
 
 /// Pushes unsynced Drift rows to Supabase (upsert by client UUID), pulls
 /// changes since a per-table cursor, marks pushed rows synced. Triggers:
