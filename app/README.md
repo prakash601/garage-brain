@@ -159,12 +159,39 @@ If `--dart-define` is omitted, the app still launches but `AppConfig.isSupabaseC
 ```bash
 cd app
 flutter analyze          # no warnings
-flutter test             # all suites: core, repositories, drift, sync_worker, features, routing, backup, seed
+flutter test             # all suites: core, repositories, drift, sync_worker, sync_e2e, features, routing, backup, seed
 
 # Regenerate Drift code after editing Drift tables
 dart run build_runner build --delete-conflicting-outputs
 dart run build_runner watch   # alternative: watch mode
 ```
+
+---
+
+## E2E sync proof (T7 contract)
+
+Automated proof runs on every `flutter test` — no devices needed:
+
+```bash
+flutter test test/data/supabase/sync_e2e_test.dart --reporter expanded
+```
+
+It boots two real Drift databases against one shared remote stand-in
+(`test/data/supabase/fake_remote_gateway.dart`) and plays the portfolio
+story end to end: offline create on device A (full S4 flow, `synced=false`,
+nothing leaks) → reconnect flush → device B pulls customer + vehicle +
+ownership trail + job with identical IDs → owner advances the status on B →
+device A pulls the update (LWW on `updated_at`).
+
+Manual on-device script for the demo video (needs one Android device, one
+Web browser, one Supabase project from the setup section above):
+
+1. Android: turn on airplane mode → create a job → success snackbar appears
+   instantly (offline badge shows the pending count).
+2. Android: turn airplane mode off → pending count drains to zero.
+3. Web (owner login): the new job appears in Dashboard/search with the same
+   `JOB-00000n` number → advance it to Ready → send the `wa.me` message.
+4. Android: pull-to-refresh → status shows ReadyForDelivery.
 
 ---
 

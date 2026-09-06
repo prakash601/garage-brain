@@ -116,8 +116,9 @@ garage-brain/
 │   │   │   ├── drift/app_database_test.dart
 │   │   │   ├── backup/backup_service_test.dart
 │   │   │   ├── seed/demo_seed_test.dart
-│   │   │   └── supabase/{sync_worker,sync_status}_test.dart
+│   │   │   ├── supabase/{sync_worker,sync_status,sync_e2e}_test.dart + fake_remote_gateway.dart
 │   │   │       # sync_status: Phase 1 fault-isolation (lastError/lastSyncAt)
+│   │   │       # sync_e2e: two-device offline→online→Web proof (T7 contract)
 │   │   ├── repositories/{customer,vehicle,job,old_bills,ownership}_test.dart + helpers.dart
 │   │   ├── features/{auth,search,create_job,dashboard,job_detail,old_bills}/* + routing/app_router_test.dart
 │   │   ├── helpers/fake_auth_gateway.dart
