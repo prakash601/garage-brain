@@ -13,7 +13,6 @@ garage-brain/
 ├── DESIGN.md                 # Product truth v0.2 + locked decisions §12
 ├── README.md                 # Root summary + quick start → links to docs/
 ├── supabase/
-│   ├── config.toml           # Supabase CLI config (non-secret)
 │   └── migrations/
 │       ├── 0001_init.sql     # T1: customers, vehicles, ownership, job_status, seq, job_cards, old_bills, recommendation_queue, indexes, touch_updated_at
 │       └── 0002_rls.sql      # T2: profiles, app_role(), custom_access_token_hook, RLS policies
@@ -27,7 +26,8 @@ garage-brain/
 │   ├── FEATURE_MATRIX.md     # Shipped vs pending vs out-of-scope (single truth)
 │   ├── DIAGRAMS.md           # All Mermaid sources in one place (ER/sequence/state/etc.)
 │   ├── DECISIONS.md          # Locked decisions mirrored from DESIGN.md §12
-│   └── DOCS_UI_PLAN.md       # Docs site options + recommended pick + scaffold
+│   ├── DOCS_UI_PLAN.md       # Docs site options + recommended pick + scaffold
+│   └── agents/               # Agent skills (see AGENTS.md): issue-tracker.md, triage-labels.md, domain.md
 ├── docs-site/                # Static docs UI (VitePress-style) serving docs/ → GitHub Pages
 │   ├── index.html            # VitePress-inspired SPA shell (also usable as Docsify fallback)
 │   ├── package.json          # Docs toolchain (optional; docs render without build)

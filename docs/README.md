@@ -18,6 +18,7 @@ This `docs/` folder is the authoritative documentation set. Every Mermaid diagra
 | [Diagrams](DIAGRAMS.md) | ER, sequence, sync, auth, navigation — all Mermaid sources in one place | Design reviews |
 | [Docs UI Plan](DOCS_UI_PLAN.md) | Options to serve this documentation as a browsable site + recommended pick + scaffold | Product, devops |
 | [Decisions Log](DECISIONS.md) | Locked decisions mirrored from `DESIGN.md §12` with rationale | Stakeholders |
+| [Agent skills](agents/issue-tracker.md) | Issue tracker workflow + [triage labels](agents/triage-labels.md) + [domain layout](agents/domain.md) — referenced by `AGENTS.md` | Agents |
 
 ## Cross-links
 

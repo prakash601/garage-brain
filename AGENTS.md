@@ -257,3 +257,19 @@ Verify: fresh-machine walkthrough succeeds.
 
 Parallelizable now: **T1, T3, T4** (zero overlap). After those: T5+T8 together,
 then T6, then T7/T9/T11/T13 branch out.
+
+---
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues via `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five canonical labels as-is. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout. See `docs/agents/domain.md`.
