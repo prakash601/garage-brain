@@ -26,3 +26,6 @@ docs-site/.vitepress/dist/
 
 # CodeGraph index
 .codegraph/
+
+# Scratch / tool output (never commit)
+.commandcode/

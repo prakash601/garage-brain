@@ -112,3 +112,4 @@ grep -R "amount\|price\|total\|gst\|inventory" app/lib                 # expect 
 ## 6. Changelog for this matrix
 
 - **2026-08-22 (1.0.0):** Initial publish. All T1–T16 marked shipped based on working-tree code that is present but not yet committed (`git status` shows `?? app/ supabase/`). Pending is Phase 2 per `DESIGN.md`. This is the authoritative "what exists" until `AGENTS.md Status Board` is flipped to ticked and committed.
+- **2026-09-06 (1.1.1):** Doc-sync: dropped aspirational `supabase/config.toml` references (file never existed — link Supabase via Dashboard/SQL Editor per `app/README.md`), indexed `docs/agents/` skill docs, committed `AGENTS.md` skill block.

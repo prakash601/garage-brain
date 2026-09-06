@@ -27,7 +27,6 @@ Offline-first Flutter app for a vehicle workshop (2W + 4W). One receptionist on 
 ../docs-site/           # Browsable docs UI (Docsify zero-build + VitePress build) — see ../docs/DOCS_UI_PLAN.md
 supabase/
   migrations/          # 0001_init.sql, 0002_rls.sql (append-only)
-  config.toml          # Supabase CLI config (non-secret)
 app/                   # Flutter app root (this folder)
   lib/
     main.dart
