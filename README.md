@@ -1,5 +1,9 @@
 # Garage Brain — Workshop OS
 
+[![CI](https://github.com/prakash601/garage-brain/actions/workflows/ci.yml/badge.svg)](https://github.com/prakash601/garage-brain/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-Riverpod%20%2B%20Drift-02569B.svg)](https://flutter.dev)
+
 > Offline-first Flutter app for a vehicle workshop (2W + 4W). One Android device for the receptionist; owner on Web. Drift + Supabase + wa.me.
 
 **Stack:** Flutter · Riverpod · Drift (SQLite) · Supabase (Postgres, RLS, Auth) · `connectivity_plus` · `go_router` · `uuid`  
